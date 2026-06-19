@@ -285,6 +285,98 @@ const stats = [
       animation: none;
     }
   }
+
+  /* Bento feature grid */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    grid-auto-rows: minmax(150px, auto);
+  }
+  .bento-cell {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(255 255 255 / 0.06);
+    background: var(--surface-card, #14181f);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition:
+      transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .bento-cell:hover {
+    transform: translateY(-3px);
+    border-color: rgb(245 158 11 / 0.3);
+    box-shadow: 0 12px 40px -12px rgb(245 158 11 / 0.25);
+  }
+  .bento-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.6rem;
+    border: 1px solid rgb(245 158 11 / 0.2);
+    background: rgb(245 158 11 / 0.1);
+    color: var(--accent-500, #f59e0b);
+    margin-bottom: 1rem;
+  }
+  .bento-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .bento-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .bento-desc {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #9aa4b3;
+  }
+  @media (min-width: 1024px) {
+    .bento-0 {
+      grid-column: span 2;
+      grid-row: span 2;
+      justify-content: center;
+    }
+    .bento-0 .bento-icon {
+      width: 3rem;
+      height: 3rem;
+    }
+    .bento-0 .bento-icon svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    .bento-0 .bento-title {
+      font-size: 1.5rem;
+    }
+    .bento-0 .bento-desc {
+      font-size: 1rem;
+      max-width: 32ch;
+    }
+    .bento-1,
+    .bento-4,
+    .bento-5 {
+      grid-column: span 2;
+    }
+  }
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .bento {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .bento-0 {
+      grid-column: span 2;
+    }
+  }
+  @media (max-width: 639px) {
+    .bento {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 
 <!-- Hero -->
@@ -344,38 +436,27 @@ const stats = [
   <h2 class="mt-2 text-center text-3xl font-extrabold sm:text-4xl">
     Build with AI, Not Just About AI
   </h2>
-  <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <div class="bento mt-10">
     {
       features.map((f, i) => (
-        <div class="flip-card reveal" style={`transition-delay: ${i * 80}ms`}>
-          <div class="flip-inner">
-            <div class="flip-face flex h-full flex-col rounded-xl border border-white/5 bg-surface-card p-6">
-              <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg border border-accent-500/20 bg-accent-500/10 text-accent-500">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-5 w-5"
-                >
-                  <Fragment set:html={f.icon} />
-                </svg>
-              </div>
-              <h3 class="text-base font-bold">{f.title}</h3>
-              <p class="mt-auto pt-3 font-mono text-[10px] font-semibold uppercase tracking-widest text-accent-500/50">
-                Hover →
-              </p>
-            </div>
-            <div
-              class="flip-face flip-back flex h-full flex-col justify-center rounded-xl border border-accent-500/25 p-6"
-              style="background: linear-gradient(135deg, #f59e0b14, #09090b)"
+        <div
+          class={`bento-cell reveal bento-${i}`}
+          style={`transition-delay: ${i * 70}ms`}
+        >
+          <div class="bento-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             >
-              <h3 class="text-sm font-bold text-accent-500">{f.title}</h3>
-              <p class="mt-2 text-sm text-gray-300">{f.desc}</p>
-            </div>
+              <Fragment set:html={f.icon} />
+            </svg>
           </div>
+          <h3 class="bento-title">{f.title}</h3>
+          <p class="bento-desc">{f.desc}</p>
         </div>
       ))
     }
